@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -21,10 +23,24 @@ class MainActivity : AppCompatActivity() {
             Log.d("Register", "Name: $name")
             Log.d("Register", "Email: $email")
             Log.d("Register", "Password: $password")
+            if(name.isNullOrEmpty() ||  email.isNullOrEmpty()||password.isNullOrEmpty()){
+               Toast.makeText(this,"The Name, Email and Password cannot be empty!!",Toast.LENGTH_SHORT).show()
+            return@setOnClickListener
 
-            if(name.isEmpty() || email.isEmpty()||password.isEmpty()){
-                Toast.makeText(this,"The Name, Email and Password cannot be empty!!",Toast.LENGTH_SHORT).show()
-            }
+           }
+
+            FirebaseAuth.getInstance().createUserWithEmailAndPassword(email,password)
+                .addOnCompleteListener {
+                 if(!it.isSuccessful) return@addOnCompleteListener
+                    Log.d("Register","Usuário criado com sucesso? ${it.result?.user?.uid}")
+                }
+                .addOnFailureListener {
+                    Log.d("Register","Falha ao criar usuário ${it.message}")
+                    Toast.makeText(this,"The Name, Email and Password cannot be empty!!",Toast.LENGTH_SHORT).show()
+
+                }
+
+
 
 
 
