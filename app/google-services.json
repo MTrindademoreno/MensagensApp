@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "968815277855",
+    "firebase_url": "https://appmensagens-d82b7.firebaseio.com",
+    "project_id": "appmensagens-d82b7",
+    "storage_bucket": "appmensagens-d82b7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:968815277855:android:cdc69b42e3c4663c87a22a",
+        "android_client_info": {
+          "package_name": "dominando.android.mensagensapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "968815277855-8tiaefue8jebuin1nevr2ei7o96oo8v6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSChMBtiCWniD-jRnHbImRjUdZD8lwAvw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "968815277855-8tiaefue8jebuin1nevr2ei7o96oo8v6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
