@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/holo_blue_light"
-    tools:context=".MainActivity">
+    tools:context=".Register_Activity">
 
     <Button
         android:id="@+id/btn_select_foto"
@@ -60,7 +60,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:background="@drawable/circle_edittext"
-        android:hint="Password"
+        android:hint="@string/password"
         android:inputType="textPassword"
         android:paddingLeft="16dp"
         app:layout_constraintEnd_toEndOf="@+id/edit_email"
@@ -76,7 +76,7 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="32dp"
         android:background="@drawable/circle_btn"
-        android:text="Register"
+        android:text="@string/register"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="@+id/edit_Password"
         app:layout_constraintStart_toStartOf="@id/edit_Password"
@@ -89,7 +89,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
-        android:text="already have an account?"
+        android:text="@string/already_have_an_account"
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="@id/btn_register"
         app:layout_constraintStart_toStartOf="@id/btn_register"
@@ -108,7 +108,7 @@
         android:scrollHorizontally="true"
         android:selectAllOnFocus="false"
         android:singleLine="true"
-        android:text="Here the world is small , here everybody communicate!!"
+        android:text="@string/here_the_world_is_small_here_everybody_communicate"
         android:textAlignment="textStart"
         android:textColor="@android:color/white"
         android:textIsSelectable="false"

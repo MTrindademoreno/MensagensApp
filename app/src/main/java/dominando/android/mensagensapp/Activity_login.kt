@@ -11,7 +11,7 @@ class Activity_login : AppCompatActivity() {
         setContentView(R.layout.login_activity)
         supportActionBar?.hide()
         text_backToRegister.setOnClickListener {
-            startActivity(Intent(this,MainActivity::class.java))
+            startActivity(Intent(this,Register_Activity::class.java))
 
         }
 
