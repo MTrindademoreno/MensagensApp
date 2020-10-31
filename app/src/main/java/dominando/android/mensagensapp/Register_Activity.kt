@@ -10,6 +10,8 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
@@ -66,7 +68,7 @@ class Register_Activity : AppCompatActivity() {
         Log.d("Register", "Name: $name")
         Log.d("Register", "Email: $email")
         Log.d("Register", "Password: $password")
-        if (name.isNullOrEmpty() || email.isNullOrEmpty() || password.isNullOrEmpty()) {
+        if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
             Toast.makeText(
                 this,
                 "The Name, Email and Password cannot be empty!!",
@@ -81,7 +83,7 @@ class Register_Activity : AppCompatActivity() {
                 if (!it.isSuccessful) return@addOnCompleteListener
                 Toast.makeText(this, "User created successfully!!", Toast.LENGTH_SHORT).show()
                 Log.d("Register", "Usuário criado com sucesso? ${it.result?.user?.uid}")
-                uploadImageToFirebaseStorage()
+                saveUserInFirebase()
             }
             .addOnFailureListener {
                 Log.d("Register", "Falha ao criar usuário ${it.message}")
@@ -96,16 +98,48 @@ class Register_Activity : AppCompatActivity() {
 
     }
 
-    private fun uploadImageToFirebaseStorage() {
-        if (selectedPhotoUri == null) return
-        val filename = UUID.randomUUID().toString()
-        val ref = FirebaseStorage.getInstance().getReference("/images/$filename")
-        ref.putFile(selectedPhotoUri!!)
-            .addOnSuccessListener {
-                Log.d("Register", "Successfully uploaded image ${it.metadata?.path}")
+    private fun saveUserInFirebase() {
+        val filename = UUID.randomUUID().toString() // 2
+        val ref = FirebaseStorage.getInstance()
+            .getReference("/images/${filename}") // 3
+        selectedPhotoUri?.let { // 4
+            ref.putFile(it) // 5
+                .addOnSuccessListener { // 6
+                    ref.downloadUrl.addOnSuccessListener { // 7
+                        Log.i("Teste", it.toString())
 
-            }
+                        val url = it.toString()
+                        val name = edit_name.text.toString()
+                        val uid = FirebaseAuth.getInstance().uid?:""
+
+                        val user = User(uid,name,url)
+
+
+                        FirebaseFirestore.getInstance().collection("/users/$uid")
+                            .document(uid)
+                            .set(user)
+
+                            .addOnSuccessListener {
+
+
+//                                //abre uma nova activity e coloca no topo
+//                                val intent = Intent(this@RegisterActivity,
+//                                    MessagesActivity::class.java)
+//                                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or
+//                                        Intent.FLAG_ACTIVITY_NEW_TASK
+//                                Log.i("Teste", "funciona até aqui ")
+//                                startActivity(intent)
+
+                            }
+                            .addOnFailureListener {
+                                Log.e("Teste", it.message,it)
+                            }
+                    }
+                }
+        }
     }
 
 
 }
+
+class User(val uid: String, val username: String, val profileimageUrl: String)
