@@ -10,13 +10,12 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
-class Register_Activity : AppCompatActivity() {
+class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -37,7 +36,7 @@ class Register_Activity : AppCompatActivity() {
 
 
         text_have_account.setOnClickListener {
-            startActivity(Intent(this, Activity_login::class.java))
+            startActivity(Intent(this, LoginActivity::class.java))
             Log.d("Register", "Go to login_Activity")
 
 
@@ -102,11 +101,11 @@ class Register_Activity : AppCompatActivity() {
         val filename = UUID.randomUUID().toString() // 2
         val ref = FirebaseStorage.getInstance()
             .getReference("/images/${filename}") // 3
-        selectedPhotoUri?.let { // 4
-            ref.putFile(it) // 5
+        selectedPhotoUri?.let { uri -> // 4
+            ref.putFile(uri) // 5
                 .addOnSuccessListener { // 6
                     ref.downloadUrl.addOnSuccessListener { // 7
-                        Log.i("Teste", it.toString())
+                        Log.i("Teste", uri.toString())
 
                         val url = it.toString()
                         val name = edit_name.text.toString()
@@ -115,24 +114,25 @@ class Register_Activity : AppCompatActivity() {
                         val user = User(uid,name,url)
 
 
-                        FirebaseFirestore.getInstance().collection("/users/$uid")
+                        FirebaseFirestore.getInstance().collection("/users/")
                             .document(uid)
                             .set(user)
 
                             .addOnSuccessListener {
+                                Log.d("Teste", "DocumentSnapshot successfully written!")
 
 
-//                                //abre uma nova activity e coloca no topo
-//                                val intent = Intent(this@RegisterActivity,
-//                                    MessagesActivity::class.java)
-//                                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or
-//                                        Intent.FLAG_ACTIVITY_NEW_TASK
-//                                Log.i("Teste", "funciona até aqui ")
-//                                startActivity(intent)
+                                //abre uma nova activity e coloca no topo
+                                val intent = Intent(this@RegisterActivity,
+                                    MesssagesActivity::class.java)
+                                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or
+                                        Intent.FLAG_ACTIVITY_NEW_TASK
+                                Log.i("Teste", "funciona até aqui ")
+                                startActivity(intent)
 
                             }
-                            .addOnFailureListener {
-                                Log.e("Teste", it.message,it)
+                            .addOnFailureListener {exeption->
+                                Log.e("Teste", exeption.message,exeption)
                             }
                     }
                 }
